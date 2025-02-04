@@ -1,0 +1,287 @@
+@import "../Mixin.scss";
+
+.uav_manager{
+    position: absolute;
+    left: 0;
+    top: 5%;
+    width: 30%;
+    height: calc(90% - 20px);
+    padding: 0 0 20px 0;
+    background-color: #6F85B088;
+    border-radius: 0 10px 10px 0;
+    transition-duration: .3s;
+    &.active{
+        animation: forwards showSectionLeftManager .3s;
+    }
+    &.unactive{
+        animation: forwards hideSectionleftManager .3s;
+    }
+    @keyframes showSectionLeftManager{
+        from{left: -30%}
+        to{left: 0}
+    }
+    @keyframes hideSectionleftManager{
+        from{left: 0;}
+        to{left: -30%;}
+    }
+
+    .close_section_left{
+        position: absolute;
+        top: calc(50% - 60px);
+        right: -40px;
+        width: 40px;
+        height: 120px;
+        background-color: #6F85B088;
+        border: none;
+        border-radius: 0 10px 10px 0;
+        padding: 0;
+        transition-duration: .3s;
+        &:hover{
+            background-color: #4C7DB0bb;
+            cursor: pointer;
+        }
+        img{
+            width: 30px;
+            height: 30px;
+        }
+        .arrow{
+            width: 100%;
+            height: 65px;
+            position: relative;
+            @include flexContainerCenterWrap();
+            div{
+                position: absolute;
+                width: 5px;
+                height: 30px;
+                background-color: whitesmoke;
+                border-radius: 2.5px;
+                transition-duration: .3s;
+            }
+            .line_1{
+                rotate: 30deg;
+                top: 6px;
+            }
+            .line_2{
+                rotate: -30deg;
+                bottom: 6px;
+            }
+            &.active{
+                .line_1{
+                    rotate: 30deg;
+                }
+                .line_2{
+                    rotate: -30deg;
+                }
+            }   
+            &.unactive{
+                .line_1{
+                    rotate: -30deg;
+                }
+                .line_2{
+                    rotate: 30deg;
+                }
+            }
+        }
+    }
+    .uav_header{
+        height: 80px;
+        background-color: #4C7DB0;
+        @include flexContainerCenterWrap();
+        border-radius: 0 10px 0 0;
+        .logo{
+            height: 50px;
+        }
+        p{
+            @include bText(40);
+            margin: 0 0 0 10px;
+        }
+    }
+    .params_list{
+        height: calc(100% - 90px);
+        width: calc(100% - 10px);
+        margin-top: 20px;
+        display: flex;
+        flex-direction: column;
+        padding-bottom: 10px;
+        padding-right: 10px;
+        overflow-y: scroll;
+        &::-webkit-scrollbar{
+            width: 5px;
+            background-color: transparent;
+        }
+        &::-webkit-scrollbar-thumb{
+            background-color: #4C7DB0;
+            border-radius: 2.5px;
+        }
+        .params_item{
+            width: 100%;
+            padding-bottom: 10px;
+            background-color: #6F85B0bb;
+            border-radius: 0 6px 6px 0;
+            flex: 0 0 auto;
+            &.big{
+                flex: 1 1 auto;
+            }
+            &:not(:first-child){margin-top: 20px;}
+            .params_item_head{
+                width: 100%;
+                height: 40px;
+                @include flexContainerCenterWrap();
+                justify-content: space-between;
+                .left_section{
+                    @include flexContainerCenterWrap();
+                    justify-content: left;
+                    width: 60%;
+                    .title{
+                        width: max-content;
+                        line-height: 40px;
+                        @include bText(20);
+                        margin: 0;
+                        padding: 0 20px;
+                        border: 2px solid whitesmoke;
+                        border-left: none;
+                        border-top: none;
+                        border-radius: 0 0 6px 0;
+                    }
+                    .hint{
+                        width: 30px;
+                        height: 30px;
+                        border-radius: 15px;
+                        border: 2px solid whitesmoke;
+                        box-sizing: border-box;
+                        margin-left: 10px;
+                        transition-duration: .3s;
+                        @include flexContainerCenterWrap();
+                        p{
+                            margin: 0;
+                            @include bText(20);
+                        }
+                        &:hover{
+                            background-color: #4C7DB0;
+                            cursor: pointer;
+                        }
+                    }
+                }
+                .uav_indicator{
+                    width: 60px;
+                    height: 20px;
+                    border-radius: 10px;
+                    margin-right: 20px;
+                    &.off{
+                        background-color: red;
+                    }
+                    &.on{
+                        background-color: #02d402;
+                    }
+                }
+            }
+            .main{
+                width: 100%;
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                justify-content: space-between;
+                margin-top: 10px;
+                .item_line{
+                    width: 95%;
+                    @include flexContainerCenterWrap();
+                    p{
+                        width: 45%;
+                        margin: 0;
+                        @include text(20);
+                        text-align: center;
+                    }
+                    input[type=text]{
+                        background-color: whitesmoke;
+                        width: 55%;
+                        height: 30px;
+                        border: none;
+                        padding: 0;
+                        text-align: center;
+                        @include text(20);
+                        color: rgb(80, 80, 80);
+                        border-radius: 6px;
+                        &:focus{outline: none;}
+                    }
+                }
+                .on_off{
+                    margin-top: 10px;
+                    width: 90%;
+                    height: 35px;
+                    border: none;
+                    background-color: #4c7db0;
+                    padding: 0;
+                    border-radius: 6px;
+                    @include bText(20);
+                    @include flexContainerCenterWrap();
+                    transition-duration: .3s;
+                    &:hover{
+                        cursor: pointer;
+                        background-color: #4C7DB0aa;
+                    }
+                }
+                &.small_list{
+                    @include flexContainerCenterWrap();
+                    justify-content: space-around;
+                    flex-direction: row;
+                    .small_button{
+                        margin-top: 10px;
+                        &:nth-child(1), &:nth-child(2){margin: 0;}
+                        width: 35%;
+                        height: 35px;
+                        background-color: #4C7DB0;
+                        border: none;
+                        border-radius: 6px;
+                        span{
+                            @include text(20);
+                        }
+                        transition-duration: .3s;
+                        &:hover{
+                            cursor: pointer;
+                            background-color: #4C7DB0aa;
+                        }
+                    }
+                }
+                &.big_list{
+                    .item_line{
+                        &:not(:first-child){margin-top: 10px;}
+                        justify-content: space-between;
+                        input[type=number]{
+                            background-color: whitesmoke;
+                            width: 30%;
+                            height: 30px;
+                            border: none;
+                            padding: 0;
+                            border-radius: 6px;
+                            text-align: center;
+                            @include text(20);
+                            color: rgb(80, 80, 80);
+                            &::-webkit-inner-spin-button, &::-webkit-outer-spin-button {
+                                -webkit-appearance: inner-spin-button;
+                                opacity: 1;
+                            }
+                            &:focus{outline: none;}
+                        }
+                        .send_setting{
+                            width: 40px;
+                            height: 40px;
+                            padding: 0;
+                            @include flexContainerCenterWrap();
+                            background-color: #4C7DB0;
+                            border: none;
+                            border-radius: 6px;
+                            transition-duration: .3s;
+                            &:hover{
+                                cursor: pointer;
+                                background-color: #4C7DB0aa;
+                            }
+                            img{
+                                width: 70%;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

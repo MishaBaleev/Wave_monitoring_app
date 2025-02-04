@@ -1,0 +1,180 @@
+@import "../Mixin.scss";
+
+.monitoring{
+    position: absolute;
+    right: 0;
+    top: 5%;
+    width: 30%;
+    height: 90%;
+    background-color: #6F85B088;
+    border-radius: 10px 0 0 10px;
+    transition-duration: .3s;
+    &.active{
+        animation: forwards showSectionLeftMonitoring .3s;
+    }
+    &.unactive{
+        animation: forwards hideSectionleftMonitoring .3s;
+    }
+    @keyframes showSectionLeftMonitoring{
+        from{right: -30%}
+        to{right: 0}
+    }
+    @keyframes hideSectionleftMonitoring{
+        from{right: 0;}
+        to{right: -30%;}
+    }
+
+    .close_section_right{
+        position: absolute;
+        top: calc(50% - 60px);
+        left: -40px;
+        width: 40px;
+        height: 120px;
+        background-color: #6F85B088;
+        border: none;
+        border-radius: 10px 0 0 10px;
+        padding: 0;
+        transition-duration: .3s;
+        &:hover{
+            background-color: #4C7DB0bb;
+            cursor: pointer;
+        }
+        img{
+            width: 30px;
+            height: 30px;
+        }
+        .arrow{
+            width: 100%;
+            height: 65px;
+            position: relative;
+            @include flexContainerCenterWrap();
+            div{
+                position: absolute;
+                width: 5px;
+                height: 30px;
+                background-color: whitesmoke;
+                border-radius: 2.5px;
+                transition-duration: .3s;
+            }
+            .line_1{
+                rotate: -30deg;
+                top: 6px;
+            }
+            .line_2{
+                rotate: 30deg;
+                bottom: 6px;
+            }
+            &.active{
+                .line_1{
+                    rotate: -30deg;
+                }
+                .line_2{
+                    rotate: 30deg;
+                }
+            }   
+            &.unactive{
+                .line_1{
+                    rotate: 30deg;
+                }
+                .line_2{
+                    rotate: -30deg;
+                }
+            }
+        }
+    }
+
+    .monitoring_main{
+        width: calc(100% - 10px);
+        height: calc(100% - 40px);
+        padding: 20px 0 20px 10px;
+        overflow-y: scroll;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        &::-webkit-scrollbar{
+            width: 5px;
+            background-color: transparent;
+        }
+        &::-webkit-scrollbar-thumb{
+            background-color: #4C7DB0;
+            border-radius: 2.5px;
+        }
+        .monitoring_item{
+            width: 100%;
+            padding-bottom: 10px;
+            background-color: #6F85B0bb;
+            border-radius: 6px;
+            &:not(:first-child){margin-top: 20px;}
+            .head_title{
+                height: 40px;
+                @include flexContainerCenterWrap();
+                justify-content: left;
+                .title{
+                    width: max-content;
+                    line-height: 40px;
+                    @include bText(20);
+                    margin: 0;
+                    padding: 0 20px;
+                    border: 2px solid whitesmoke;
+                    border-left: none;
+                    border-top: none;
+                    border-radius: 0 0 6px 0;
+                }
+                .hint{
+                    width: 30px;
+                    height: 30px;
+                    border-radius: 15px;
+                    border: 2px solid whitesmoke;
+                    box-sizing: border-box;
+                    margin-left: 10px;
+                    transition-duration: .3s;
+                    @include flexContainerCenterWrap();
+                    background-color: transparent;
+                    @include bText(20);
+                    p{
+                        margin: 0;
+                        @include bText(20);
+                    }
+                    &:hover{
+                        background-color: #4C7DB0;
+                        cursor: pointer;
+                    }
+                }
+            }
+            .info_monitoring{
+                width: 100%;
+                @include flexContainerCenterWrap();
+                justify-content: space-around;
+                .info_line{
+                    width: 45%;
+                    margin-top: 10px;
+                    padding: 3px 0;
+                    border-radius: 6px;
+                    @include flexContainerCenterWrap();
+                    justify-content: center;
+                    border: 2px dashed whitesmoke;
+                    .topic{
+                        @include text(20);
+                        margin: 0
+                    }
+                    .value{
+                        background-color: whitesmoke;
+                        height: 30px;
+                        width: 50%;
+                        border-radius: 6px;
+                        margin-left: 10px;
+                        @include flexContainerCenterWrap();
+                        span{
+                            @include text(20);
+                            color: rgb(80, 80, 80);
+                        }
+                    }
+                }
+                .monitoring_graph{
+                    margin-top: 10px;
+                    width: 80%;
+                }
+            }
+        }
+    }
+}
