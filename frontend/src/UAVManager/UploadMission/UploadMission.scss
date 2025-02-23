@@ -1,0 +1,72 @@
+@import "../../Mixin.scss";
+
+.upload_mission{
+    position: fixed;
+    left: 35%;
+    bottom: 5%;
+    width: 30%;
+    height: 45%;
+    background-color: #6F85B0aa;
+    border-radius: 10px;
+    border: 2px solid whitesmoke;
+    .title{
+        width: 100%;
+        height: 35px;
+        background-color: #4C7DB0;
+        @include flexContainerCenterWrap();
+        border-radius: 10px 10px 0 0;
+        h3{
+            margin: 0;
+            text-align: center;
+            @include bText(20);
+        }
+    }
+    .missions{
+        padding: 0;
+        padding-bottom: 10px;
+        margin: 0;
+        width: 100%;
+        height: calc(100% - 45px);
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: space-evenly;
+        overflow-y: scroll;
+        &::-webkit-scrollbar{
+            width: 5px;
+            background-color: transparent;
+        }
+        &::-webkit-scrollbar-thumb{
+            background-color: whitesmoke;
+            border-radius: 2.5px;
+        }
+        li{
+            margin-top: 20px;
+            overflow: hidden;
+            width: 45%;
+            aspect-ratio: 1/1;
+            list-style-type: none;
+            border-radius: 10px;
+            .mission_title{
+                width: 100%;
+                height: 30px;
+                background-color: #4C7DB0;
+                @include flexContainerCenterWrap();
+                border: 2px solid whitesmoke;
+                border-bottom: none;
+                box-sizing: border-box;
+                border-radius: 10px 10px 0 0;
+                h3{
+                    margin: 0;
+                    @include text(20);
+                }
+            }
+            img{
+                width: 100%;
+                height: calc(100% - 30px);
+            }
+            &:hover{
+                cursor: pointer;
+            }
+        }
+    }
+}

@@ -14,12 +14,17 @@ const MultiGraphMonitoring = (props) => {
                 label: item.title,
                 borderColor: colors[index],
                 lineTension: 0.1,
-                pointRadius: 4,
+                pointRadius: 0,
                 pointHoverRadius: 6,
             }
         })
     }
     let options = {
+        responsive: true,
+        // animation: {duration: 1},
+        hover: {
+            mode: null // Отключает hover эффекты
+        },
         plugins: {
             legend: {
                 display: true,
@@ -33,7 +38,9 @@ const MultiGraphMonitoring = (props) => {
                 },
                 suggestedMin:0,
                 ticks:{
-                    color: "whitesmoke"
+                    color: "whitesmoke",
+                    autoSkip: true,
+                    maxTicksLimit: 5
                 },
                 title: {
                     display: true,
@@ -48,7 +55,9 @@ const MultiGraphMonitoring = (props) => {
                     color: "whitesmoke"
                 },
                 ticks:{
-                    color: "whitesmoke"
+                    color: "whitesmoke",
+                    autoSkip: true,
+                    maxTicksLimit: 5
                 },
                 title: {
                     display: true,

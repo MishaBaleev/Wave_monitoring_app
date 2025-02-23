@@ -1,17 +1,25 @@
 import mapboxgl from "mapbox-gl";
 import 'mapbox-gl/dist/mapbox-gl.css';
+import drone from "./img/drone.png";
 
 export class MapManager{
-    constructor(){
+    constructor(addMissionElement, deleteMissionElement, updateMissionElement, clearMissionSlice){
         const token = "pk.eyJ1IjoiYmFsZWV2IiwiYSI6ImNsYXBqNmk4dTE5Y3UzcWxiYmt1bTJtcG8ifQ.aE8lRdfDnWq52szIP7gAHw"
         mapboxgl.accessToken = token
+        this.map = null
+        this.uav = null 
+        this.mission_markers = []
+        this.last_index = 0
+        this.addMissionElement = addMissionElement
+        this.deleteMissionElement = deleteMissionElement
+        this.updateMissionElement = updateMissionElement
+        this.clearMissionSlice = clearMissionSlice
     }
     init(){
-        console.log(1)
         this.map = new mapboxgl.Map({
             container: "map",
-            style: 'mapbox://styles/mapbox/streets-v12',
-            center: [38.943917, 47.203948],
+            style: 'mapbox://styles/mapbox/outdoors-v12',
+            center: [8.548180419357262, 47.39866486639688],
             zoom: 15,
             minZoom: 2
         })
@@ -54,5 +62,133 @@ export class MapManager{
                 }, labelLayerId
             );
         })
+        this.map.on("click", (e) => {this.addMissionPoint(e.lngLat)})
+    }
+    addMissionPoint(coords){
+        let marker = new mapboxgl.Marker({color: "#4C7DB0", draggable: true}).setLngLat([coords.lng, coords.lat]).addTo(this.map)
+        marker.id = this.last_index
+        marker.on("drag", (e) => {
+            this.updateRoute()
+        })
+        marker.on("dragend", (e) => {
+            let coords = e.target.getLngLat()
+            this.updateMissionElement({id: marker.id, type: "coords", value: [coords.lng, coords.lat]})
+        })
+        let marker_index = document.createElement("span")
+        marker_index.classList.add("marker_index")
+        marker_index.textContent = this.last_index+1
+        this.last_index++
+        marker.getElement().append(marker_index)
+        this.mission_markers.push(marker)
+        let mission_markers_coords = this.mission_markers.map(marker => {return [marker.getLngLat().lng, marker.getLngLat().lat]})
+        this.showRoute(mission_markers_coords)
+        this.addMissionElement({id: marker.id, coords: [marker.getLngLat().lng, marker.getLngLat().lat]})
+    }
+    updateRoute(){
+        let new_coords = this.mission_markers.map(marker => {return [marker.getLngLat().lng, marker.getLngLat().lat]})
+        let geojson_obj = {
+            "type": "FeatureCollection",
+            "features": [
+                {
+                    "type": "Feature",
+                    "geometry": {
+                        "type": "LineString",
+                        "coordinates": new_coords
+                    }
+                }
+            ]
+        }
+        this.map.getSource("mission_line_source").setData(geojson_obj)
+    }
+    deleteElement(id){
+        let new_markers = []
+        this.mission_markers.forEach(marker => {
+            if (marker.id !== id){new_markers.push(marker)}
+            else{marker.remove()}
+        })
+        this.mission_markers = [...new_markers]
+        let mission_markers_coords = this.mission_markers.map(marker => {return [marker.getLngLat().lng, marker.getLngLat().lat]})
+        this.showRoute(mission_markers_coords)
+    }
+    showRoute(coords){
+        if (this.map.getLayer("mission_line_layer")){
+            this.map.removeLayer("mission_line_layer")
+            this.map.removeSource("mission_line_source")
+        }
+        this.map.addSource('mission_line_source', {
+            'type': 'geojson',
+            'data': {
+                'type': 'Feature',
+                'properties': {},
+                'geometry': {
+                    'type': 'LineString',
+                    'coordinates': coords
+                }
+            }
+        })
+        this.map.addLayer({
+            'id': 'mission_line_layer',
+            'type': 'line',
+            'source': 'mission_line_source',
+            'layout': {
+                'line-join': 'round',
+                'line-cap': 'round'
+            },
+            'paint': {
+                'line-color': '#02d402',
+                'line-width': 8
+            }
+        })
+    }
+    setUAVCoords(coords, yaw_angle){
+        // console.log(yaw_angle)
+        if (this.uav === null){ //show uav
+            this.uav = new mapboxgl.Marker().setLngLat(coords).addTo(this.map)
+            this.map.flyTo({center: coords})
+            let icon = document.createElement("img")
+            icon.src = drone 
+            icon.width = 65 
+            icon.height = 65 
+            icon.style.transformOrigin = "center"
+            icon.style.transform = `rotate(${yaw_angle}deg)`
+            this.uav.getElement().querySelector("svg").remove()
+            this.uav.getElement().append(icon)
+        }else{//update uav position
+            this.uav.setLngLat(coords)
+            this.uav.getElement().querySelector("img").style.transform = `rotate(${yaw_angle}deg)`
+        }
+    }
+    showMission(waypoints){
+        this.clearMission()
+        waypoints.forEach(point => {
+            let marker = new mapboxgl.Marker({color: "#4C7DB0", draggable: true}).setLngLat([point.x, point.y]).addTo(this.map)
+            marker.id = this.last_index
+            marker.on("drag", (e) => {
+                this.updateRoute()
+            })
+            marker.on("dragend", (e) => {
+                let coords = e.target.getLngLat()
+                this.updateMissionElement({id: marker.id, type: "coords", value: [coords.lng, coords.lat]})
+            })
+            let marker_index = document.createElement("span")
+            marker_index.classList.add("marker_index")
+            marker_index.textContent = this.last_index+1
+            this.last_index++
+            marker.getElement().append(marker_index)
+            this.mission_markers.push(marker)
+            this.addMissionElement({id: marker.id, coords: [marker.getLngLat().lng, marker.getLngLat().lat]})
+        })
+        let mission_markers_coords = this.mission_markers.map(marker => {return [marker.getLngLat().lng, marker.getLngLat().lat]})
+        this.showRoute(mission_markers_coords)
+    }
+    clearMission(){
+        if (this.mission_markers.length !== 0){
+            this.map.removeLayer("mission_line_layer")
+            this.map.removeSource("mission_line_source")
+            this.mission_markers.forEach(marker => {marker.remove()})
+            this.mission_markers = []
+            this.last_index = 0
+            this.clearMissionSlice()
+        }
     }
 }

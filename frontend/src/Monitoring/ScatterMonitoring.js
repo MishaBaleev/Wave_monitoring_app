@@ -16,6 +16,7 @@ const ScatterMonitoring = (props) => {
         ]
     }
     let options = {
+        animation: {duration: 0},
         plugins: {
             legend: {
                 display: true,
@@ -40,8 +41,7 @@ const ScatterMonitoring = (props) => {
                 },
                 ticks:{
                     color: "whitesmoke"
-                },
-                suggestedMin: 0
+                }
             },
             y: {
                 grid:{
@@ -55,8 +55,7 @@ const ScatterMonitoring = (props) => {
                 },
                 ticks:{
                     color: "whitesmoke"
-                },
-                suggestedMin: 0
+                }
             },
         }
     }

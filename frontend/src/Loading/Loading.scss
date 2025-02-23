@@ -1,0 +1,66 @@
+@import "../Mixin.scss";
+
+.loading_cmp{
+    width: 100%;
+    height: 100%;
+    background-color: rgba(111, 133, 176, 0.5333333333);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    p{
+        margin: 0;
+        margin-top: 20px;
+        @include bText(40);
+    }
+    .spinner{
+        position: relative;
+        width: 100px;
+        height: 100px;
+        
+        /* Общие стили для кругов */
+        .spinner-circle {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            animation: spin 4s linear infinite;
+            /* Индивидуальные стили для каждого круга */
+            &:nth-child(1) {
+                border: 4px solid whitesmoke;
+                animation-delay: -0.5s;
+            }
+            
+            &:nth-child(2) {
+                border: 4px solid whitesmoke;
+                animation-delay: -1s;
+            }
+            
+            &:nth-child(3) {
+                border: 4px solid whitesmoke;
+                animation-delay: -1.5s;
+            }
+            
+            &:nth-child(4) {
+                border: 4px solid whitesmoke;
+                animation-delay: -2s;
+            }
+        }
+          
+          /* Анимация вращения */
+        @keyframes spin {
+            0% {
+              transform: scale(1);
+              opacity: 1;
+            }
+            50% {
+              transform: scale(0.5);
+              opacity: 0.5;
+            }
+            100% {
+              transform: scale(1);
+              opacity: 1;
+            }
+        }
+    }
+}
