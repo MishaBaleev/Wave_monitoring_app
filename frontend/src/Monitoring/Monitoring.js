@@ -9,13 +9,14 @@ const Monitoring = (props) => {
     //state
     const [section_state, setSectionState] = useState("")
     const hints = [
-        {title: "Координаты", message: "Любое положение БПЛА на плоскости можно описать двумя метриками:\n- Широта - это расстояние от экватора до данной точки на поверхности Земли, выраженная в граудсах от 0° до 90°;\n- Долгота - кратчайшее расстояние от нулевого меридиана до заданного объекта, выраженное в градусах от 0° до 180°"},
+        {title: "Координаты", message: "Любое положение БПЛА на плоскости можно описать двумя метриками:\n- Широта (Lon) - это расстояние от экватора до данной точки на поверхности Земли, выраженная в граудсах от 0° до 90°;\n- Долгота (Lat) - кратчайшее расстояние от нулевого меридиана до заданного объекта, выраженное в градусах от 0° до 180°"},
         {title: "Высота", message: "В дополнение к координатам БПЛА стоит учитывать высоту взлета БПЛА над поверхностью земли"},
+        {title: "Скорость перемещения", message: "При перемещении из одной точки в другую БПЛА обладает некоторой скоростью, которая является основной из его динмических характеристик."},
         {title: "Углы", message: "Любое положение БПЛА в трехмерном пространстве можно описать тремя метриками:\n- Roll (крен) - вращение вдоль продольной оси, при котором крылья наклоняются от полёта на уровне до бокового положения;\n - Pitch (тангаж) - движение БПЛА вверх или вниз вдоль боковой оси;\n - Yaw (рыскание) - вращение БПЛА вокруг вертикальной оси, при котором нос двигается влево или вправо"},
         {title: "Заряд батареи", message: "Батарея - источник питания БПЛА, его заряд напрямую влияет на выполнение полетного задания - при нулевом значении заряда БПЛА отключает системы"},
         {title: "Кол-во спутников", message: "БПЛА ориентируется в пространстве в основном при помощи системы GPS, которая в свою очередь использует в качестве источника информации группу спутников. Низкое количество видимых спунтиков может плохо сказаться на возможности БПЛА позиционировать себя в пространстве"}
     ]
-    const [active_graph, setActiveGraph] = useState(["alt", "angles"])
+    const [active_graph, setActiveGraph] = useState(["alt", "vel"])
 
     //handlers
     const changeSectionState = () => {
@@ -30,15 +31,6 @@ const Monitoring = (props) => {
         props.updateModal({title: hints[hint_index].title, message: hints[hint_index].message})
     }
 
-    const getRoute = () => {
-        let lon_list = props.cur_data.lon_list 
-        let lat_list = props.cur_data.lat_list 
-        let route = []
-        lon_list.forEach((lon, index) => {
-            route.push({x: lon, y: lat_list[index]})
-        })
-        return route
-    }
     const roundValue = (value) => {
         return Math.round(value * 100) / 100
     }
@@ -68,12 +60,12 @@ const Monitoring = (props) => {
                 </div>
                 <div className="info_monitoring">
                     <div className="info_line">
-                        <p className="topic">Широта</p>
-                        <div className="value"><span>{props.cur_data.lat}</span></div>
+                        <p className="topic">Lon</p>
+                        <div className="value"><span>{props.cur_data.lat===null?"--":props.cur_data.lat}</span></div>
                     </div>
                     <div className="info_line">
-                        <p className="topic">Долгота</p>
-                        <div className="value"><span>{props.cur_data.lon}</span></div>
+                        <p className="topic">Lat</p>
+                        <div className="value"><span>{props.cur_data.lon===null?"--":props.cur_data.lon}</span></div>
                     </div>
                 </div>
             </div>
@@ -83,8 +75,8 @@ const Monitoring = (props) => {
                     <button className="hint" onClick={() => {showHint(1)}}><span>?</span></button>
                 </div>
                 <div className="info_monitoring">
-                    <div className="info_line">
-                        <p className="topic">Высота</p>
+                    <div className="info_line big">
+                        <p className="topic">Высота (м)</p>
                         <div className="value"><span>{roundValue(props.cur_data.altitude_relative)} м</span></div>
                     </div>
                     {active_graph.includes("alt") ? 
@@ -98,8 +90,27 @@ const Monitoring = (props) => {
             </div>
             <div className="monitoring_item">
                 <div className="head_title">
-                    <p className="title">Углы</p>
+                    <p className="title">Скорость перемещения</p>
                     <button className="hint" onClick={() => {showHint(2)}}><span>?</span></button>
+                </div>
+                <div className="info_monitoring">
+                    <div className="info_line big">
+                        <p className="topic">Скорость (м/c) </p>
+                        <div className="value"><span>{roundValue(props.cur_data.vel)} м/с</span></div>
+                    </div>
+                    {active_graph.includes("vel") ? 
+                        <MultiGraphMonitoring
+                            x_ticks={props.cur_data.vel_list.map((_, index) => {return index + 1})}
+                            data={[{title: "Vel", data: props.cur_data.vel_list}]}
+                        />:
+                        <button className="add_graph" onClick={() => {changeActiveGraph("vel")}}><span>Показать график</span></button>
+                    }
+                </div>
+            </div>
+            <div className="monitoring_item">
+                <div className="head_title">
+                    <p className="title">Углы</p>
+                    <button className="hint" onClick={() => {showHint(3)}}><span>?</span></button>
                 </div>
                 <div className="info_monitoring">
                     <div className="info_line">
@@ -126,10 +137,10 @@ const Monitoring = (props) => {
             <div className="monitoring_item">
                 <div className="head_title">
                     <p className="title">Уровень заряда батареи</p>
-                    <button className="hint" onClick={() => {showHint(3)}}><span>?</span></button>
+                    <button className="hint" onClick={() => {showHint(4)}}><span>?</span></button>
                 </div>
                 <div className="info_monitoring">
-                    <div className="info_line">
+                    <div className="info_line big">
                         <p className="topic">Заряд</p>
                         <div className="value"><span>{roundValue(props.cur_data.battery_remaining)} %</span></div>
                     </div>
@@ -145,10 +156,10 @@ const Monitoring = (props) => {
             <div className="monitoring_item">
                 <div className="head_title">
                     <p className="title">Кол-во спутников</p>
-                    <button className="hint" onClick={() => {showHint(4)}}><span>?</span></button>
+                    <button className="hint" onClick={() => {showHint(5)}}><span>?</span></button>
                 </div>
                 <div className="info_monitoring">
-                    <div className="info_line">
+                    <div className="info_line big">
                         <p className="topic">Спутники</p>
                         <div className="value"><span>{roundValue(props.cur_data.satellites_visible)} шт.</span></div>
                     </div>

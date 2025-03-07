@@ -2,10 +2,8 @@ from django.shortcuts import render
 
 from rest_framework.views import APIView
 from rest_framework.response import Response
-from serial.tools import list_ports
 import ujson as json
-import requests
-import pandas as pd
+import os
 
 def index(request):
     return render(request, "index.html")

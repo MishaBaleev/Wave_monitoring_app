@@ -1,6 +1,6 @@
 import mapboxgl from "mapbox-gl";
 import 'mapbox-gl/dist/mapbox-gl.css';
-import drone from "./img/drone.png";
+import drone from "./img/0.png";
 
 export class MapManager{
     constructor(addMissionElement, deleteMissionElement, updateMissionElement, clearMissionSlice){
@@ -14,6 +14,14 @@ export class MapManager{
         this.deleteMissionElement = deleteMissionElement
         this.updateMissionElement = updateMissionElement
         this.clearMissionSlice = clearMissionSlice
+
+        this.addMissionPoint = this.addMissionPoint.bind(this)
+        this.updateRoute = this.updateRoute.bind(this)
+        this.deleteElement = this.deleteElement.bind(this)
+        this.showRoute = this.showRoute.bind(this)
+        this.setUAVCoords = this.setUAVCoords.bind(this)
+        this.showMission = this.showMission.bind(this)
+        this.clearMission = this.clearMission.bind(this)
     }
     init(){
         this.map = new mapboxgl.Map({
@@ -86,6 +94,7 @@ export class MapManager{
     }
     updateRoute(){
         let new_coords = this.mission_markers.map(marker => {return [marker.getLngLat().lng, marker.getLngLat().lat]})
+        // new_coords.unshift([this.uav.getLngLat().lng, this.uav.getLngLat().lat])
         let geojson_obj = {
             "type": "FeatureCollection",
             "features": [
@@ -115,6 +124,7 @@ export class MapManager{
             this.map.removeLayer("mission_line_layer")
             this.map.removeSource("mission_line_source")
         }
+        // coords.unshift([this.uav.getLngLat().lng, this.uav.getLngLat().lat])
         this.map.addSource('mission_line_source', {
             'type': 'geojson',
             'data': {
@@ -141,21 +151,15 @@ export class MapManager{
         })
     }
     setUAVCoords(coords, yaw_angle){
-        // console.log(yaw_angle)
         if (this.uav === null){ //show uav
-            this.uav = new mapboxgl.Marker().setLngLat(coords).addTo(this.map)
+            const el = document.createElement('div')
+            el.className = 'drone';
+            this.uav = new mapboxgl.Marker(el, {offset: [-2, 11]}).setLngLat(coords).addTo(this.map)
             this.map.flyTo({center: coords})
-            let icon = document.createElement("img")
-            icon.src = drone 
-            icon.width = 65 
-            icon.height = 65 
-            icon.style.transformOrigin = "center"
-            icon.style.transform = `rotate(${yaw_angle}deg)`
-            this.uav.getElement().querySelector("svg").remove()
-            this.uav.getElement().append(icon)
+
         }else{//update uav position
             this.uav.setLngLat(coords)
-            this.uav.getElement().querySelector("img").style.transform = `rotate(${yaw_angle}deg)`
+            this.uav.setRotation(yaw_angle)
         }
     }
     showMission(waypoints){

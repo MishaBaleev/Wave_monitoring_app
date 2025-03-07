@@ -112,7 +112,7 @@
                 .title{
                     width: max-content;
                     line-height: 40px;
-                    @include bText(20);
+                    @include bText(18);
                     margin: 0;
                     padding: 0 20px;
                     border: 2px solid whitesmoke;
@@ -130,10 +130,10 @@
                     transition-duration: .3s;
                     @include flexContainerCenterWrap();
                     background-color: transparent;
-                    @include bText(20);
+                    @include bText(18);
                     p{
                         margin: 0;
-                        @include bText(20);
+                        @include bText(18);
                     }
                     &:hover{
                         background-color: #4C7DB0;
@@ -153,26 +153,33 @@
                     @include flexContainerCenterWrap();
                     justify-content: center;
                     border: 2px dashed whitesmoke;
+                    &.big{
+                        width: 80%;
+                        .topic{}
+                        .value{width: 50%;}
+                    }
                     .topic{
-                        @include text(20);
+                        @include text(16.5);
                         margin: 0
                     }
                     .value{
                         background-color: whitesmoke;
                         height: 30px;
-                        width: 50%;
+                        width: 70%;
                         border-radius: 6px;
                         margin-left: 10px;
                         @include flexContainerCenterWrap();
                         span{
-                            @include text(20);
+                            @include text(16.5);
                             color: rgb(80, 80, 80);
                         }
                     }
                 }
                 .monitoring_graph{
                     margin-top: 10px;
-                    width: 80%;
+                    width: 95%;
+                    background-color: #4C7DB0aa;
+                    border-radius: 10px;
                 }
                 .add_graph{
                     width: 90%;
@@ -183,7 +190,7 @@
                     border-radius: 6px;
                     transition-duration: 0.3s;
                     span{
-                        @include text(20);
+                        @include text(16.5);
                     }
                     &:hover{
                         cursor: pointer;

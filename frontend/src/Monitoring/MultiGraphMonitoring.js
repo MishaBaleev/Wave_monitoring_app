@@ -1,12 +1,14 @@
+import { useEffect, useRef } from 'react';
 import { Line } from 'react-chartjs-2';
 
 const MultiGraphMonitoring = (props) => {
     //handlers
+    const chart_ref = useRef(null)
 
     //state
     const colors = ["#FF0000", "#00FF00", "#FF4500", "#F5F5F5", "#FF00FF", "#8B4513", "#FFFF00"]
     let data = {
-        labels: props.x_ticks,
+        labels: Array(100).fill(0).map((item, index) => {return index+1}),
         color: "whitesmoke",
         datasets: props.data.map((item, index) => {
             return {
@@ -21,9 +23,11 @@ const MultiGraphMonitoring = (props) => {
     }
     let options = {
         responsive: true,
-        // animation: {duration: 1},
+        animation: {
+            duration: 200,
+        },
         hover: {
-            mode: null // Отключает hover эффекты
+            mode: null
         },
         plugins: {
             legend: {
@@ -36,7 +40,6 @@ const MultiGraphMonitoring = (props) => {
                 grid:{
                     color: "whiteSmoke"
                 },
-                suggestedMin:0,
                 ticks:{
                     color: "whitesmoke",
                     autoSkip: true,
@@ -69,8 +72,28 @@ const MultiGraphMonitoring = (props) => {
         }
     }
 
+    //handlers
+    // useEffect(() => {
+    //     if (chart_ref.current) {
+    //         chart_ref.current.update(); // Принудительно обновляем график
+    //     }
+    //   }, [props.data]);
+    useEffect(() => { //resize
+        const handleResize = () => {
+            if (chart_ref.current) {
+            chart_ref.current.resize()
+            }
+        };
+        
+        window.addEventListener('resize', handleResize)
+        
+        return () => {
+          window.removeEventListener('resize', handleResize);
+        }
+        }, [])
+
     return <div className="monitoring_graph">
-        <Line
+        <Line ref={chart_ref}
             type="line"
             data={data} 
             options={options}

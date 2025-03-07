@@ -18,7 +18,7 @@
         h3{
             margin: 0;
             text-align: center;
-            @include bText(20);
+            @include bText(18);
         }
     }
     .missions{
@@ -57,7 +57,7 @@
                 border-radius: 10px 10px 0 0;
                 h3{
                     margin: 0;
-                    @include text(20);
+                    @include text(16.5);
                 }
             }
             img{

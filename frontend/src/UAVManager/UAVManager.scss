@@ -84,20 +84,20 @@
         }
     }
     .uav_header{
-        height: 80px;
+        height: 60px;
         background-color: #4C7DB0;
         @include flexContainerCenterWrap();
         border-radius: 0 10px 0 0;
         .logo{
-            height: 50px;
+            height: 40px;
         }
         p{
-            @include bText(40);
+            @include bText(30);
             margin: 0 0 0 10px;
         }
     }
     .params_list{
-        height: calc(100% - 90px);
+        height: calc(100% - 70px);
         width: calc(100% - 10px);
         margin-top: 20px;
         display: flex;
@@ -123,6 +123,13 @@
                 flex: 1 1 auto;
             }
             &:not(:first-child){margin-top: 20px;}
+            &.destruct{
+                .params_item_head{
+                    .left_section{
+                        width: 100%;
+                    }
+                } 
+            }
             .params_item_head{
                 width: 100%;
                 height: 40px;
@@ -131,13 +138,16 @@
                 .left_section{
                     @include flexContainerCenterWrap();
                     justify-content: left;
-                    width: 70%;
+                    width: 100%;
+                    &.small{
+                        width: 70%;
+                    }
                     .title{
                         width: max-content;
                         line-height: 40px;
-                        @include bText(20);
+                        @include bText(18);
                         margin: 0;
-                        padding: 0 20px;
+                        padding: 0 10px;
                         border: 2px solid whitesmoke;
                         border-left: none;
                         border-top: none;
@@ -188,7 +198,7 @@
                     p{
                         width: 45%;
                         margin: 0;
-                        @include text(20);
+                        @include text(16.5);
                         text-align: center;
                     }
                     input[type=text]{
@@ -198,7 +208,7 @@
                         border: none;
                         padding: 0;
                         text-align: center;
-                        @include text(20);
+                        @include text(16.5);
                         color: rgb(80, 80, 80);
                         border-radius: 6px;
                         &:focus{outline: none;}
@@ -212,7 +222,7 @@
                     background-color: #4c7db0;
                     padding: 0;
                     border-radius: 6px;
-                    @include bText(20);
+                    @include bText(16.5);
                     @include flexContainerCenterWrap();
                     transition-duration: .3s;
                     &:hover{
@@ -236,13 +246,15 @@
                         border: none;
                         border-radius: 6px;
                         span{
-                            @include text(20);
+                            @include bText(16.5);
                         }
                         transition-duration: .3s;
                         &:hover{
                             cursor: pointer;
                             background-color: #4C7DB0aa;
                         }
+                        &.green{background-color: #02d402;}
+                        &.red{background-color: red;}
                     }
                     .big_button{
                         margin-top: 10px;
@@ -253,13 +265,15 @@
                         border: none;
                         border-radius: 6px;
                         span{
-                            @include text(20);
+                            @include bText(16.5);
                         }
                         transition-duration: .3s;
                         &:hover{
                             cursor: pointer;
                             background-color: #4C7DB0aa;
                         }
+                        &.green{background-color: #02d402;}
+                        &.red{background-color: red;}
                     }
                 }
                 &.big_list{
@@ -274,13 +288,30 @@
                             padding: 0;
                             border-radius: 6px;
                             text-align: center;
-                            @include text(20);
+                            @include text(16.5);
                             color: rgb(80, 80, 80);
                             &::-webkit-inner-spin-button, &::-webkit-outer-spin-button {
                                 -webkit-appearance: inner-spin-button;
                                 opacity: 1;
                             }
                             &:focus{outline: none;}
+                        }
+                        .hint{
+                            width: 30px;
+                            height: 30px;
+                            border-radius: 15px;
+                            border: 2px solid whitesmoke;
+                            box-sizing: border-box;
+                            transition-duration: .3s;
+                            @include flexContainerCenterWrap();
+                            p{
+                                margin: 0;
+                                @include bText(20);
+                            }
+                            &:hover{
+                                background-color: #4C7DB0;
+                                cursor: pointer;
+                            }
                         }
                         .send_setting{
                             width: 40px;
@@ -311,7 +342,8 @@
                             border-radius: 6px;
                             width: 45%;
                             height: 35px;
-                            @include text(20);
+                            @include bText(16.5);
+                            text-align: center;
                             border: none;
                             transition-duration: .3s;
                             &:hover{
@@ -333,7 +365,7 @@
                             background-color: #4C7DB0;
                             @include flexContainerCenterWrap();
                             span{
-                                @include bText(20);
+                                @include bText(18);
                             }
                         }
                         .mission_items_ul{
@@ -355,12 +387,12 @@
                                     margin-top: 10px;
                                     width: 100%;
                                     text-align: center;
-                                    @include text(18);
+                                    @include text(16.5);
                                 }
                                 .point_top{
                                     padding: 5px 20px;
                                     width: 40%;
-                                    @include bText(18);
+                                    @include bText(16.5);
                                     border: 2px dashed whitesmoke;
                                     border-top: none;
                                     border-left: none;
@@ -395,12 +427,14 @@
                                     @include flexContainerCenterWrap();
                                     justify-content: space-around;
                                     span{
-                                        @include text(17)
+                                        width: 40%;
+                                        @include text(16.5);
+                                        text-align: center;
                                     }
                                     input[type=number]{
                                         border: none;
                                         padding: 0;
-                                        @include text(17);
+                                        @include text(16.5);
                                         color: rgb(80, 80, 80);
                                         text-align: center;
                                         &:focus{outline: none;}

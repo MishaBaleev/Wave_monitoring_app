@@ -1,10 +1,11 @@
 .App{
     position: relative;
     width: 100%;
-    min-width: 1400px;
+    min-width: 1280px;
     height: 100vh;
-    min-height: 850px;
+    min-height: 720px;
     overflow-x: hidden;
+    *:focus{ outline: none; }
     .main_window{
         width: 100%;
         height: 100%;
@@ -12,6 +13,14 @@
             width: 100%;
             height: 100%;
         }
+    }
+    .drone{
+        background-image: url(./img/drone.png);
+        width: 65px;
+        height: 65px;
+        background-size: 100%;
+        display: block;
+        border: none;
     }
     .marker_index{
         position: absolute;

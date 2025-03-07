@@ -4,10 +4,11 @@ import logo from "./img/logo.png";
 import section_logo from "./img/section_logo.png";
 import { connect } from "react-redux";
 import { changeConnected, updateModal } from "../AppSlice";
-import send_img from "./img/send.png";
 import UploadMission from "./UploadMission/UploadMission";
 import axios from "axios";
-import MissionPlanner from "../Monitoring/MissionPlanner";
+import MissionPlanner from "./MissionPlanner";
+import Destruct from "./Destruct";
+import UAVSettings from "./UAVSettings";
 
 const UAVManager = (props) => {
     //state
@@ -16,7 +17,8 @@ const UAVManager = (props) => {
         {title: "Адрес устройства", message: "В данное поле необходимо ввести IP-адрес устройства + порт, при помощи которого будет осуществляться соединение. Данную информацию можно узнать в конфигурационном файле прошивки БПЛА"},
         {title: "Управление", message: "Здесь Вы можете отправить команду на БПЛА.\n- Takeoff - команда отрыва БПЛА от земли;\n- Start Mission - команда загрузки полетного задания на БПЛА;\n- Land - команда посадки БПЛА;\n- RTL - команда возврата БПЛА к точке старта;\n- ARM - команда перевода БПЛА в армированный режим;\n- Disarm - команда вывода БПЛА из армированного режима"},
         {title: "Планирование миссий", message: "Здесь Вы можете редактировать полетное задание для БПЛА: для создания путевой точки необходимо нажать на карту, для удаления полетного элемента необходимо нажать на соотвтетвующую кнопку в данном разделе.\nТакже Вы можете выбрать заранее подготовленные маршруты."},
-        {title: "Настройка ПК", message: "ПК (полетный контроллер) - электронное устройство, представляющее собой вычислительную систему, работающую по сложным алгоритмам и управляющую полётом БПЛА. ПК обладает рядом параметров, которые можно настроить непосредственно на лету.\n- ASPD scale - \n- BAT crit thr - \n- Bat1 n cells - \n- Bat v load drop - "}
+        {title: "Деструктивное воздействие", message: "Здесь Вы можете проводить эксперименты, демонстрирующие нештатные ситуации, которые могут произойти с БПЛА.\n- GPS on/off - отключает/включает систему позиционирования БПЛА в пространстве. Данная система позволяет БПЛА определеить свои координаты, высоту, а также скорость;\n- Compass on/off - отключает/включает бортовой компас. Дання подсистема позволяет БПЛА определять стороны света для обеспечения корректной навигации в пространстве;\n- Acel on/off - отключает/включает встроенный в систему акселерометр. Дання подсистема позволяет определять ускорение БПЛА в пространстве, что влияет на позиционирование."},
+        {title: "Настройка ПК", message: "ПК (полетный контроллер) - электронное устройство, представляющее собой вычислительную систему, работающую по сложным алгоритмам и управляющую полётом БПЛА. ПК обладает рядом параметров, которые можно настроить непосредственно на лету."}
     ]
     const [address, setAddress] = useState("192.168.0.197:14550")
     const [is_active_up_mis, setActiveUpMis] = useState(false)
@@ -93,7 +95,7 @@ const UAVManager = (props) => {
         <section className="params_list">
             <div className="params_item">
                 <div className="params_item_head">
-                    <div className="left_section">
+                    <div className="left_section small">
                         <p className="title">Подключение</p>
                         <div className="hint" onClick={() => {showHint(0)}}><p>?</p></div>
                     </div>
@@ -121,87 +123,16 @@ const UAVManager = (props) => {
                 <div className="main small_list">
                     <button className="small_button" onClick={() => {props.sendCommand("takeoff", {})}}><span>Takeoff</span></button>
                     {/* <button className="small_button" onClick={toggleUpMis}><span>Start Mission</span></button> */}
-                    <button className="small_button" onClick={() => {props.sendCommand("rtl", {})}}><span>RTL</span></button>
-                    <button className="small_button" onClick={() => {props.sendCommand("arm", {})}}><span>ARM</span></button>
-                    <button className="small_button" onClick={() => {props.sendCommand("disarm", {})}}><span>DisARM</span></button>
-                    <button className="big_button" onClick={() => {props.sendCommand("land", {})}}><span>Land</span></button>
-                    {/* <button className="big_button" onClick={() => {props.map_manager.clearMission()}}><span>Очистить линии миссии</span></button> */}
+                    <button className="small_button" onClick={() => {props.sendCommand("land", {})}}><span>Landing</span></button>
+                    <button className="big_button" onClick={() => {props.sendCommand("rtl", {})}}><span>Return to launch</span></button>
+                    {/* <button className="small_button" onClick={() => {props.sendCommand("arm", {})}}><span>ARM</span></button>
+                    <button className="small_button" onClick={() => {props.sendCommand("disarm", {})}}><span>DisARM</span></button> */}
+                    
                 </div>
             </div>  
             <MissionPlanner showHint={showHint} map_manager={props.map_manager} toggleUpMis={toggleUpMis} startMission={startMission}/>
-            <div className="params_item big">
-                <div className="params_item_head big">
-                    <div className="left_section">
-                        <p className="title">Настройка ПК</p>
-                        <div className="hint" onClick={() => {showHint(3)}}><p>?</p></div>
-                    </div>
-                </div>
-                <div className="main big_list">
-                    <div className="item_line">
-                        <p>ASPD scale</p>
-                        <input type="number"
-                            placeholder="0"
-                        />
-                        <button className="send_setting"><img src={send_img} alt="send"/></button>
-                    </div>
-                    <div className="item_line">
-                        <p>BAT CRIT THR</p>
-                        <input type="number"
-                            placeholder="0"
-                        />
-                        <button className="send_setting"><img src={send_img} alt="send"/></button>
-                    </div>
-                    <div className="item_line">
-                        <p>BAT1 N CELLS</p>
-                        <input type="number"
-                            placeholder="0"
-                        />
-                        <button className="send_setting"><img src={send_img} alt="send"/></button>
-                    </div>
-                    <div className="item_line">
-                        <p>BAT V LOAD DROP</p>
-                        <input type="number"
-                            placeholder="0"
-                        />
-                        <button className="send_setting"><img src={send_img} alt="send"/></button>
-                    </div>
-                    <div className="item_line">
-                        <p>BAT V LOAD DROP</p>
-                        <input type="number"
-                            placeholder="0"
-                        />
-                        <button className="send_setting"><img src={send_img} alt="send"/></button>
-                    </div>
-                    <div className="item_line">
-                        <p>BAT V LOAD DROP</p>
-                        <input type="number"
-                            placeholder="0"
-                        />
-                        <button className="send_setting"><img src={send_img} alt="send"/></button>
-                    </div>
-                    <div className="item_line">
-                        <p>BAT V LOAD DROP</p>
-                        <input type="number"
-                            placeholder="0"
-                        />
-                        <button className="send_setting"><img src={send_img} alt="send"/></button>
-                    </div>
-                    <div className="item_line">
-                        <p>BAT V LOAD DROP</p>
-                        <input type="number"
-                            placeholder="0"
-                        />
-                        <button className="send_setting"><img src={send_img} alt="send"/></button>
-                    </div>
-                    <div className="item_line">
-                        <p>BAT V LOAD DROP</p>
-                        <input type="number"
-                            placeholder="0"
-                        />
-                        <button className="send_setting"><img src={send_img} alt="send"/></button>
-                    </div>
-                </div>
-            </div>  
+            <Destruct showHint={showHint} sendCommand={props.sendCommand}/>
+            <UAVSettings showHint={showHint} sendCommand={props.sendCommand}/>
         </section>
         {is_active_up_mis === true?<UploadMission showMission={showMission}/>:""}
     </div>

@@ -2,7 +2,7 @@ from pymavlink import mavutil
 import math 
 
 class MissionItem():
-    def __init__(self, index:int, current:int, x:float, y:float, z:float) -> None:
+    def __init__(self, index:int, current:int, x:float, y:float, z:float, speed:int) -> None:
         self.seq = index 
         self.frame = mavutil.mavlink.MAV_FRAME_GLOBAL_RELATIVE_ALT
         self.command = mavutil.mavlink.MAV_CMD_NAV_WAYPOINT

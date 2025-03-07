@@ -1,7 +1,11 @@
+import { useRef, useEffect } from "react";
 import {Scatter} from "react-chartjs-2";
 
 const ScatterMonitoring = (props) => {
     //state
+    const chart_ref = useRef(null)
+    const container_ref = useRef(null)
+
     let data = {
         datasets: [
             {   
@@ -16,6 +20,8 @@ const ScatterMonitoring = (props) => {
         ]
     }
     let options = {
+        responsive: true,
+        maintainAspectRatio: false,
         animation: {duration: 0},
         plugins: {
             legend: {
@@ -60,8 +66,25 @@ const ScatterMonitoring = (props) => {
         }
     }
 
-    return <div className="monitoring_graph">
-        <Scatter
+    //handlers
+    useEffect(() => {
+        console.log(2)
+        const handleResize = () => {
+            console.log(1)
+          if (chart_ref.current) {
+            chart_ref.current.resize();
+          }
+        };
+      
+        window.addEventListener('resize', handleResize);
+      
+        // return () => {
+        //   window.removeEventListener('resize', handleResize);
+        // };
+      }, []);
+
+    return <div className="monitoring_graph" ref={container_ref}>
+        <Scatter ref={chart_ref}
             type="linear"
             data={data} 
             options={options}

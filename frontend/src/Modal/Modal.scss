@@ -45,7 +45,7 @@
         border-radius: 10px 10px 0 0;
         @include flexContainerCenterWrap();
         p{
-            @include bText(25);
+            @include bText(20);
             margin: 0;
         }
     }
@@ -54,7 +54,7 @@
         padding: 0 10px;
         margin: 20px 0 0 0;
         p{
-            @include text(20);
+            @include text(16.5);
             margin: 0;
             text-align: justify;
             white-space: pre-wrap;

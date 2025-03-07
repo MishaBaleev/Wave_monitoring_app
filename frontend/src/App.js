@@ -9,6 +9,7 @@ import Monitoring from "./Monitoring/Monitoring";
 import Loading from "./Loading/Loading";
 import { Chart, registerables} from 'chart.js';
 import axios from "axios";
+
 Chart.register(...registerables);
 
 const App = (props) => {
@@ -32,7 +33,9 @@ const App = (props) => {
     battery_remaining: null,
     battery_remaining_list: [],
     altitude_relative: null,
-    altitude_relative_list: []
+    altitude_relative_list: [],
+    vel: null,
+    vel_list: []
   })
 
   //handlers
