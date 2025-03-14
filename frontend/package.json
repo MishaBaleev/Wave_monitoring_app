@@ -4,9 +4,10 @@
   "private": true,
   "dependencies": {
     "@reduxjs/toolkit": "^2.5.0",
-    "axios": "^1.7.9",
+    "axios": "^1.8.2",
     "chart.js": "^4.4.7",
     "cra-template": "1.2.0",
+    "lodash.debounce": "^4.0.8",
     "mapbox-gl": "^3.9.2",
     "react": "^19.0.0",
     "react-chartjs-2": "^5.3.0",

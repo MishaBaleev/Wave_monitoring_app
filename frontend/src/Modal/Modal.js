@@ -6,6 +6,7 @@ import { useEffect, useState } from "react";
 const Modal = (props) => {
     //state
     const [timer, setTimer] = useState(null)
+    
     //handlers
     useEffect(() => {
         clearInterval(timer)

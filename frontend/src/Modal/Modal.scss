@@ -12,13 +12,13 @@
     border-radius: 10px;
     .close_modal{
         position: absolute;
-        right: -10px;
-        top: -10px;
+        right: 0;
+        top: 0;
         width: 30px;
         height: 30px;
         background-color: red;
         border: none;
-        border-radius: 3px;
+        border-radius: 3px 10px 3px 3px;
         padding: 0;
         @include flexContainerCenterWrap();
         transition-duration: .1s;
@@ -45,7 +45,7 @@
         border-radius: 10px 10px 0 0;
         @include flexContainerCenterWrap();
         p{
-            @include bText(20);
+            @include bText(18);
             margin: 0;
         }
     }

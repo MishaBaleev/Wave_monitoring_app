@@ -1,6 +1,5 @@
 import { useState } from "react";
 import { connect } from "react-redux";
-import { updateModal } from "../AppSlice";
 
 const Destruct = (props) => {
     //state

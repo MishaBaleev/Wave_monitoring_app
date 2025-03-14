@@ -22,7 +22,9 @@ class MainConsumer(WebsocketConsumer):
             "pitch_count": 0, 
             "yaw_count": 0, 
             "lat_count": 0, 
-            "lon_count": 0,  
+            "lon_count": 0,
+            "eph_count": 0,
+            "epv_count": 0,  
             "satellites_visible_count": 0,
             "battery_remaining_count": 0,
             "altitude_relative_count": 0,
@@ -93,11 +95,13 @@ class MainConsumer(WebsocketConsumer):
                 {"yaw": "ATTITUDE"}, 
                 {"lat": "GPS_RAW_INT"}, 
                 {"lon": "GPS_RAW_INT"},  
+                {"eph": "GPS_RAW_INT"},
+                {"epv": "GPS_RAW_INT"},
                 {"satellites_visible": "GPS_RAW_INT"},
                 {"battery_remaining": "BATTERY_STATUS"},
                 {"altitude_relative": "ALTITUDE"},
                 {"vel": "GPS_RAW_INT"}
-            ]
+            ] 
             for h in headers:
                 try:
                     key = list(h.keys())[0]

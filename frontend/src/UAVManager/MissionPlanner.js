@@ -1,6 +1,5 @@
-import { useEffect, useState } from "react"
-import { connect } from "react-redux"
-import PointItem from "./PointItem"
+import { connect } from "react-redux";
+import PointItem from "./PointItem";
 
 const MissionPlanner = (props) => {
     //state 

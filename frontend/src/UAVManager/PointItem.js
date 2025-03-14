@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { connect } from "react-redux";
 import { deleteMissionElement, updateMissionElement } from "../AppSlice";
 import delete_icon from "./img/trash.png";
@@ -6,7 +6,7 @@ import delete_icon from "./img/trash.png";
 const PointItem = (props) => {
     //state
     const [alt, setAlt] = useState(3)
-    const [speed, setSpeed] = useState(3)
+    // const [speed, setSpeed] = useState(3)
 
     //handlers
     const changeAlt = (new_alt) => {
@@ -14,10 +14,10 @@ const PointItem = (props) => {
         props.updateMissionElement({id: props.item.id, type: "alt", value: parseInt(new_alt)})
     }
 
-    const changeSpeed = (new_speed) => {
-        setSpeed(new_speed)
-        props.updateMissionElement({id: props.item.id, type: "speed", value: parseInt(new_speed)})
-    }
+    // const changeSpeed = (new_speed) => {
+    //     setSpeed(new_speed)
+    //     props.updateMissionElement({id: props.item.id, type: "speed", value: parseInt(new_speed)})
+    // }
 
     const deleteItem = () => {
         props.map_manager.deleteElement(props.item.id)

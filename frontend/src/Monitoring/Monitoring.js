@@ -1,5 +1,5 @@
 import "./Monitoring.scss";
-import { useEffect, useState } from "react"; 
+import { useState } from "react"; 
 import logo_section from "./img/logo_section.png";
 import { connect } from "react-redux";
 import { updateModal } from "../AppSlice";
@@ -14,7 +14,8 @@ const Monitoring = (props) => {
         {title: "Скорость перемещения", message: "При перемещении из одной точки в другую БПЛА обладает некоторой скоростью, которая является основной из его динмических характеристик."},
         {title: "Углы", message: "Любое положение БПЛА в трехмерном пространстве можно описать тремя метриками:\n- Roll (крен) - вращение вдоль продольной оси, при котором крылья наклоняются от полёта на уровне до бокового положения;\n - Pitch (тангаж) - движение БПЛА вверх или вниз вдоль боковой оси;\n - Yaw (рыскание) - вращение БПЛА вокруг вертикальной оси, при котором нос двигается влево или вправо"},
         {title: "Заряд батареи", message: "Батарея - источник питания БПЛА, его заряд напрямую влияет на выполнение полетного задания - при нулевом значении заряда БПЛА отключает системы"},
-        {title: "Кол-во спутников", message: "БПЛА ориентируется в пространстве в основном при помощи системы GPS, которая в свою очередь использует в качестве источника информации группу спутников. Низкое количество видимых спунтиков может плохо сказаться на возможности БПЛА позиционировать себя в пространстве"}
+        {title: "Кол-во спутников", message: "БПЛА ориентируется в пространстве в основном при помощи системы GPS, которая в свою очередь использует в качестве источника информации группу спутников. Низкое количество видимых спунтиков может плохо сказаться на возможности БПЛА позиционировать себя в пространстве"},
+        {title: "EPH, EPV", message: "Горизонтальная и вертикальная погрешность - точность ориентирования в пространстве, чем данное значение меньше, тем лучше для БПЛА, значение 0 говорит об идеальной точности, которая возможна только в симуляторе."}
     ]
     const [active_graph, setActiveGraph] = useState(["alt", "vel"])
 
@@ -46,7 +47,7 @@ const Monitoring = (props) => {
 
     return <div className={"monitoring " + section_state}>
         <button className="close_section_right" onClick={changeSectionState}>
-            <img src={logo_section}/>
+            <img src={logo_section} alt="logo"/>
             <div className={"arrow " + section_state}>
                 <div className="line_1"/>
                 <div className="line_2"/>
@@ -169,6 +170,29 @@ const Monitoring = (props) => {
                             data={[{title: "Setellites", data: props.cur_data.satellites_visible_list}]}
                         />:
                         <button className="add_graph" onClick={() => {changeActiveGraph("setellites")}}><span>Показать график</span></button>
+                    }
+                </div>
+            </div>
+            <div className="monitoring_item">
+                <div className="head_title">
+                    <p className="title">Погрешности позиц-ния</p>
+                    <button className="hint" onClick={() => {showHint(6)}}><span>?</span></button>
+                </div>
+                <div className="info_monitoring">
+                    <div className="info_line">
+                        <p className="topic">EPH</p>
+                        <div className="value"><span>{roundValue(props.cur_data.eph)}</span></div>
+                    </div>
+                    <div className="info_line">
+                        <p className="topic">EPV</p>
+                        <div className="value"><span>{roundValue(props.cur_data.epv)}</span></div>
+                    </div>
+                    {active_graph.includes("eph_epv") ? 
+                        <MultiGraphMonitoring
+                            x_ticks={props.cur_data.roll_list.map((_, index) => {return index + 1})}
+                            data={[{title: "EPH", data: props.cur_data.eph_list}, {title: "EPV", data: props.cur_data.epv_list}]}
+                        />:
+                        <button className="add_graph" onClick={() => {changeActiveGraph("eph_epv")}}><span>Показать график</span></button>
                     }
                 </div>
             </div>

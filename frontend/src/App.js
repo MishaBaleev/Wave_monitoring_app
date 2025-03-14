@@ -9,6 +9,7 @@ import Monitoring from "./Monitoring/Monitoring";
 import Loading from "./Loading/Loading";
 import { Chart, registerables} from 'chart.js';
 import axios from "axios";
+import LogPlayer from "./LogPlayer/LogPlayer";
 
 Chart.register(...registerables);
 
@@ -17,6 +18,8 @@ const App = (props) => {
   const [map_manager, _] = useState(new MapManager(props.addMissionElement, props.deleteMissionElement, props.updateMissionElement, props.clearMission))
   const [is_int_ready, setIntReady] = useState(false)
   const [main_socket, setMainSocket] = useState(null)
+  const [log_player_active, setLogPlayerActive] = useState("")
+
   const [cur_data, setCurData] = useState({
     roll: null,
     roll_list: [],
@@ -26,6 +29,10 @@ const App = (props) => {
     yaw_list: [],
     lat: null,
     lat_list: [],
+    eph: null,
+    eph_list: [],
+    epv: null,
+    epv_list: [],
     lon: null,
     lon_list: [],
     satellites_visible: null,
@@ -40,10 +47,10 @@ const App = (props) => {
 
   //handlers
   const checkBack = () => {
-    axios.get("http://127.0.0.1:8000/checkBack").then(response => {
+    axios.get(`http://127.0.0.1:${props.app.backend_port}/checkBack`).then(response => {
         setIntReady(true)
-        map_manager.init()
-    }).catch(() => {
+    }).catch((e) => {
+      console.log(e)
       setTimeout(() => {checkBack()}, 1000)
     })
   }
@@ -56,6 +63,7 @@ const App = (props) => {
       let main_socket_new = new WebSocket(`ws://localhost:${props.app.backend_port}/main`)
       main_socket_new.onmessage = onMessage
       setMainSocket(main_socket_new)
+      map_manager.init()
     }
   }, [is_int_ready])
 
@@ -97,13 +105,20 @@ const App = (props) => {
     }
   }
 
+  const changeLogPlayerActive = () => {
+    if (log_player_active === "active"){setLogPlayerActive("unactive")}
+    else {setLogPlayerActive("active")}
+  }
+
   return <div className="App">
     {is_int_ready===true?
       <div className="main_window">
         <div id="map"/>
         {props.app.modal.title === "" ? "" : <Modal/>}
-        <UAVManager sendCommand={sendCommand} map_manager={map_manager}/>
+        <UAVManager sendCommand={sendCommand} map_manager={map_manager} changeLogPlayerActive={changeLogPlayerActive}/>
         <Monitoring cur_data={cur_data}/>
+        <button className="log_player_button_show" onClick={changeLogPlayerActive}><span>Анализ лог-записей</span></button>
+        <LogPlayer changeLogPlayerActive={changeLogPlayerActive} log_player_active={log_player_active}/>
       </div>:<Loading/>
     }
   </div>

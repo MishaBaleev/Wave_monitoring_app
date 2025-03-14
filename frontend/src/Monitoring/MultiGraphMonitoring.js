@@ -1,5 +1,14 @@
 import { useEffect, useRef } from 'react';
-import { Line } from 'react-chartjs-2';
+import {Scatter} from "react-chartjs-2";
+import {
+    Chart as ChartJS,
+    LinearScale,
+    PointElement,
+    LineElement,
+    Tooltip,
+    Legend,
+  } from 'chart.js';
+ChartJS.register(LinearScale, PointElement, LineElement, Tooltip, Legend);
 
 const MultiGraphMonitoring = (props) => {
     //handlers
@@ -12,12 +21,12 @@ const MultiGraphMonitoring = (props) => {
         color: "whitesmoke",
         datasets: props.data.map((item, index) => {
             return {
-                data: item.data,
                 label: item.title,
+                data: item.data.map((d, d_index) => {return {x: d_index, y: d}}),
                 borderColor: colors[index],
-                lineTension: 0.1,
-                pointRadius: 0,
-                pointHoverRadius: 6,
+                borderWidth: 3,
+                pointRadius: 0, 
+                showLine: true
             }
         })
     }
@@ -25,6 +34,7 @@ const MultiGraphMonitoring = (props) => {
         responsive: true,
         animation: {
             duration: 200,
+            easing: "linear",
         },
         hover: {
             mode: null
@@ -90,10 +100,10 @@ const MultiGraphMonitoring = (props) => {
         return () => {
           window.removeEventListener('resize', handleResize);
         }
-        }, [])
+    }, [])
 
     return <div className="monitoring_graph">
-        <Line ref={chart_ref}
+        <Scatter ref={chart_ref}
             type="line"
             data={data} 
             options={options}

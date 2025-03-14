@@ -82,7 +82,7 @@ const UAVManager = (props) => {
 
     return <div className={"uav_manager " + section_state}>
         <button className="close_section_left" onClick={changeSectionState}>
-            <img src={section_logo}/>
+            <img src={section_logo} alt="logo"/>
             <div className={"arrow " + section_state}>
                 <div className="line_1"/>
                 <div className="line_2"/>
@@ -99,7 +99,7 @@ const UAVManager = (props) => {
                         <p className="title">Подключение</p>
                         <div className="hint" onClick={() => {showHint(0)}}><p>?</p></div>
                     </div>
-                    <div className={"uav_indicator "+(props.app.is_connected==true?"on":"off")}/>
+                    <div className={"uav_indicator "+(props.app.is_connected===true?"on":"off")}/>
                 </div>
                 <div className="main">
                     <div className="item_line">
@@ -110,7 +110,7 @@ const UAVManager = (props) => {
                             onChange={(e) => {setAddress(e.target.value)}}
                         />
                     </div>
-                    <button className="on_off" onClick={onOffUAV}><span>{props.app.is_connected==true?"Отключить":"Подключить"}</span></button>
+                    <button className="on_off" onClick={onOffUAV}><span>{props.app.is_connected===true?"Отключить":"Подключить"}</span></button>
                 </div>
             </div>  
             <div className="params_item">

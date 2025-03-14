@@ -1,6 +1,5 @@
 import mapboxgl from "mapbox-gl";
 import 'mapbox-gl/dist/mapbox-gl.css';
-import drone from "./img/0.png";
 
 export class MapManager{
     constructor(addMissionElement, deleteMissionElement, updateMissionElement, clearMissionSlice){
@@ -27,6 +26,7 @@ export class MapManager{
         this.map = new mapboxgl.Map({
             container: "map",
             style: 'mapbox://styles/mapbox/outdoors-v12',
+            // style: "mapbox://styles/mapbox/streets-v11",
             center: [8.548180419357262, 47.39866486639688],
             zoom: 15,
             minZoom: 2
