@@ -1,0 +1,10 @@
+[2025-03-14 16:37:31,161]:INFO:CommandLogger:Successfully started command logger, time_usec - 1741959451.1611433
+[2025-03-14 16:37:31,239]:INFO:CommandLogger:Successfully started uav logger, time_usec - 1741959451.239578
+[2025-03-14 16:37:31,248]:INFO:CommandLogger:Successfully started uav params sender, time_usec - 1741959451.2486346
+[2025-03-14 16:37:31,249]:INFO:CommandLogger:Successfully connected, time_usec - 1741959451.2496722
+[2025-03-14 16:37:40,782]:INFO:CommandLogger:Successfully uploaded mission with 5 waypoints, time_usec - 1741959460.7823703
+[2025-03-14 16:37:40,783]:INFO:CommandLogger:Successfully armed, time_usec - 1741959460.783402
+[2025-03-14 16:37:40,783]:INFO:CommandLogger:Successfully takeoff, time_usec - 1741959460.783968
+[2025-03-14 16:37:40,783]:INFO:CommandLogger:Successfully started mission with 5 waypoints, time_usec - 1741959460.783968
+[2025-03-14 16:37:55,446]:INFO:CommandLogger:Successfully saved uav log, time_usec - 1741959475.446749
+[2025-03-14 16:37:55,447]:INFO:CommandLogger:Successfully disconnected, time_usec - 1741959475.4477525

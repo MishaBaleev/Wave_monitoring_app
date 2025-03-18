@@ -29,16 +29,31 @@ class UAV_Logger():
             "vel": [],
             "vel_time": [] 
         }
+        self.mission = {
+            "mission_lat": [],
+            "mission_lon": [],
+            "mission_alt": []
+        }
         com_logger.logger.info(f"Successfully started uav logger, time_usec - {time.time()}")
 
     def updateLog(self, key:str, value:float) -> None:
         self.log[key].append(value)
         self.log[f"{key}_time"].append(time.time())
         # self.com_logger.logger.info(f"Successfully updated uav log, time_usec - {time.time()}")
+
+    def setMission(self, waypoints:list) -> None:
+        for point in waypoints:
+            self.mission["mission_lat"].append(point[0])
+            self.mission["mission_lon"].append(point[1])
+            self.mission["mission_alt"].append(point[2])
     
     def saveLog(self) -> None:
         df = pd.DataFrame()
         for log_key in list(self.log.keys()):
             df = pd.concat([df, pd.DataFrame({log_key: self.log[log_key]})], axis=1)
+        df = pd.concat([df, pd.DataFrame({"": []})], axis=1)
+        for mission_key in list(self.mission.keys()):
+            print({mission_key: self.mission[mission_key]}) 
+            df = pd.concat([df, pd.DataFrame({mission_key: self.mission[mission_key]})], axis=1)
         df.to_excel(f'{os.getcwd().replace("backend", "uav_logs")}/uav_log_{time.time()}.xlsx')
         self.com_logger.logger.info(f"Successfully saved uav log, time_usec - {time.time()}")

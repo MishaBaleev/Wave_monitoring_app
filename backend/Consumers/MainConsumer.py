@@ -162,6 +162,7 @@ class MainConsumer(WebsocketConsumer):
                 case "start_mission":
                     if self.connected:
                         mission_data = [{"coords": item["coords"], "speed": item["speed"]} for item in data["data"]["mission"]]
+                        self.uav_logger.setMission([item["coords"] for item in mission_data])
                         mission_waypoints = []
                         for index, point in enumerate(mission_data):
                             mission_waypoints.append(MissionItem(index, 0, point["coords"][1], point["coords"][0], point["coords"][2], point["speed"]))

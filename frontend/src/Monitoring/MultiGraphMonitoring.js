@@ -17,7 +17,6 @@ const MultiGraphMonitoring = (props) => {
     //state
     const colors = ["#FF0000", "#00FF00", "#FF4500", "#F5F5F5", "#FF00FF", "#8B4513", "#FFFF00"]
     let data = {
-        labels: Array(100).fill(0).map((item, index) => {return index+1}),
         color: "whitesmoke",
         datasets: props.data.map((item, index) => {
             return {

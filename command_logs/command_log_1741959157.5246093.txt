@@ -1,0 +1,4 @@
+[2025-03-14 16:32:37,524]:INFO:CommandLogger:Successfully started command logger, time_usec - 1741959157.5246093
+[2025-03-14 16:32:37,524]:INFO:CommandLogger:Successfully started uav logger, time_usec - 1741959157.5246093
+[2025-03-14 16:32:37,525]:INFO:CommandLogger:Successfully started uav params sender, time_usec - 1741959157.5256124
+[2025-03-14 16:32:37,526]:INFO:CommandLogger:Successfully connected, time_usec - 1741959157.5266135
