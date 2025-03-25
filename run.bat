@@ -1,0 +1,1 @@
+call .\.venv\Scripts\activate.bat && cd wave_app && python run.pyc

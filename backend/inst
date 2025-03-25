@@ -1,4 +1,0 @@
-
-
-
-pyinstaller --name=BackendApp --add-data="manage.py;." --add-data="db.sqlite3;." --add-data="backend/settings.py;backend" --add-data="backend/urls.py;backend" --add-data="api;api" --add-data="Consumers;Consumers" --add-data="plans;plans" --add-data="backend/staticfiles;backend/staticfiles" --hidden-import="django.core.management" --hidden-import="django.utils" --hidden-import="channels" --hidden-import="asgiref" --clean --onefile run.py

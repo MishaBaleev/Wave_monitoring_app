@@ -1,0 +1,9 @@
+python -m compileall .
+
+Get-ChildItem -Recurse -Filter *.py | Remove-Item -Force
+
+Get-ChildItem -Recurse -Filter *.pyc | Where-Object { $_.DirectoryName -like '*__pycache__' } | ForEach-Object {$newPath = Join-Path (Split-Path $_.DirectoryName) ($_.Name -replace '_cpython-*', '')Move-Item $_.FullName $newPath -Force}
+
+Get-ChildItem -Recurse -Directory -Filter __pycache__ | Remove-Item -Force -Recurse
+
+python rename.py
