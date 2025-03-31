@@ -43,8 +43,8 @@ class UAV_Logger():
 
     def setMission(self, waypoints:list) -> None:
         for point in waypoints:
-            self.mission["mission_lat"].append(point[0])
-            self.mission["mission_lon"].append(point[1])
+            self.mission["mission_lon"].append(point[0])
+            self.mission["mission_lat"].append(point[1])
             self.mission["mission_alt"].append(point[2])
     
     def saveLog(self) -> None:
