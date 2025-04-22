@@ -8,5 +8,6 @@ urlpatterns = [
     path("", index, name="index"),
     path("checkBack", checkBack.as_view()),
     path("getMissionPlan", getMissionPlan.as_view()),
-    path("getLogData", getLogData.as_view())
+    path("getLogData", getLogData.as_view()),
+    path("uploadLogPart", uploadLogPart.as_view())
 ]

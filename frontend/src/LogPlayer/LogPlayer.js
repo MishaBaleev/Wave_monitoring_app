@@ -93,8 +93,19 @@ const LogPlayer = (props) => {
         })
     }
 
+    const uploadLog = () => {
+        let log_data_part = {}
+        graph_titles.forEach(key => {log_data_part[key] = log_data[key]})
+        const data = new FormData()
+        data.append("data", JSON.stringify(log_data_part))
+        axios.post(`http://localhost:${props.app.backend_port}/uploadLogPart`, data).then(response => {
+            if (response.status === 500){
+                props.updateModal({title: "Ошибка", message: "Ошибка при сохранении отчета по выбранным параметрам"})
+            }
+        })
+    }
+
     const getRows = (data) => {
-        
         let rows = [] 
         let max_len = Object.values(data.altitude_relative).length
         for (let i=0; i<=max_len-1; i++){
@@ -125,6 +136,8 @@ const LogPlayer = (props) => {
                     <div className="log_name"><span>Лог: {cutText(log_params.name, 40)}</span></div>
                     <div className="block"/>
                     <div className="log_time"><span>Продолжительность: {log_params.duration} сек.</span></div>
+                    <div className="block"/>
+                    <div className="log_refresh" onClick={uploadLog}>Выгрузить параметры</div>
                     <div className="block"/>
                     <button className="log_refresh" onClick={refresh}>Очистить</button>
                 </div>
